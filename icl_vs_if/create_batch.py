@@ -7,13 +7,13 @@ def concat_csvs(location, filenames, resulting_filename):
     combined_csv.to_csv(location + resulting_filename + '.csv', index=False)
 
 task_list = [('capslock-math', 2), ('repeat-math', 2), ('capslock-startblank', 2), ('repeat-startblank', 2)]
-lang_list = ['en', 'fr', 'es', 'nl', 'hu', 'ls', 'pl']
-model_list = ['llama', 'alpaca', 'vicuna-7b', 'opt-1.3b', 'opt-iml-max-1.3b']
+lang_list = ['en']
+model_list = ['alpaca']
 instr_list = ['instr']
 prompt_template_list = ['input']
 
 print('Generate batch of datasets for generate.py...')
-print('  Models:', model_list)
+print('  Models: alpaca')
 
 files = []
 for (task, shot), lang, instr, prompt_template in product(task_list, lang_list, instr_list, prompt_template_list):
@@ -27,11 +27,13 @@ concat_csvs("in_csvs/", files, concatenated_filehandle)
 
 print(f'Generated {concatenated_filehandle}')
 
-complete_command = ""
-for model in model_list:
-    command=f"python3 generate.py --model {model} --batch {concatenated_filehandle}"
-    complete_command += command + " ; "
+complete_command = """
+import subprocess
 
-with open("batch_generate.sh", "w") as f:
+subprocess.run(["python3", "/kaggle/working/understanding-forgetting/icl_vs_if/generate.py", "--model", "alpaca", "--batch", "batch"])
+"""
+
+with open("/kaggle/working/understanding-forgetting/batch_generate.py", "w") as f:
     f.write(complete_command)
-    f.write("\n")
+
+print("Generated batch_generate.py")
