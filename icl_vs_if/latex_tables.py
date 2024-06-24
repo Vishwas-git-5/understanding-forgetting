@@ -9,7 +9,7 @@ lang_codes_to_name = {
     'en': 'English',
 }
 
-files, results = get_results_dict('/kaggle/working/understanding-forgetting/icl_vs_if/out_csvs/batch-alpaca.csv')
+files, results = get_results_dict('/content/understanding-forgetting/icl_vs_if/out_csvs/batch-alpaca.csv')
 
 # Only the alpaca model
 MODELS = ['alpaca']
