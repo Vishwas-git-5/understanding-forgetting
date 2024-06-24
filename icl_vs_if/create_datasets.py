@@ -10,7 +10,7 @@ PROMPT_TEMPLATE_LIST = ["input"]
 print('Generating datasets for English...')
 
 for (ICL_TASK, IF_TASK, kshot), INSTRUCTION_TEMPLATE, PROMPT_TEMPLATE in product(TASK_LIST, INSTRUCTION_TEMPLATE_LIST, PROMPT_TEMPLATE_LIST):    
-    with open("/kaggle/working/understanding-forgetting/icl_vs_if/sentences/random_sentences_en.txt", 'r', encoding='utf-8') as f:
+    with open("/content/understanding-forgetting/icl_vs_if/sentences/random_sentences_en.txt", 'r', encoding='utf-8') as f:
         sentences = [line.strip('\n') for line in f]
 
     # Define ICL tasks
@@ -77,4 +77,4 @@ for (ICL_TASK, IF_TASK, kshot), INSTRUCTION_TEMPLATE, PROMPT_TEMPLATE in product
     data = [generate_sample(kshot=kshot) for _ in range(100)]
 
     df = pd.DataFrame.from_dict(data)
-    df.to_csv(f"/kaggle/working/understanding-forgetting/icl_vs_if/in_csvs/{ICL_TASK}-{IF_TASK}-{INSTRUCTION_TEMPLATE}-{PROMPT_TEMPLATE}-en-{kshot}shot.csv")
+    df.to_csv(f"/content/understanding-forgetting/icl_vs_if/in_csvs/{ICL_TASK}-{IF_TASK}-{INSTRUCTION_TEMPLATE}-{PROMPT_TEMPLATE}-en-{kshot}shot.csv")
