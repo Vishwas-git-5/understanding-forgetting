@@ -2,7 +2,6 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from tqdm import tqdm
 import argparse
 import pandas as pd
-import torch  # Import torch for GPU availability check
 
 # Update the MODEL_PATH to the new model identifier
 MODEL_PATH = "microsoft/Phi-3-mini-4k-instruct"
@@ -20,25 +19,12 @@ out_csv = f'/content/understanding-forgetting/icl_vs_if/out_csvs/{args.batch}-{a
 
 df = pd.read_csv(in_csv)
 
-def load_model(model_name, max_context_length=1024):
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        device='cuda' if torch.cuda.is_available() else 'cpu',  # Use GPU if available
-        load_in_8bit=True,  # Enable quantization with bitsandbytes
-        max_length=max_context_length,
-    )
-
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_name,
-        device='cuda' if torch.cuda.is_available() else 'cpu',  # Use GPU if available
-    )    
-
-    return model, tokenizer
-
-model, tokenizer = load_model(MODEL_PATH)
+# Load tokenizer (no need for model loading)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
 
 def model_forward_batch(input_batch):
     inputs = tokenizer(input_batch, return_tensors="pt", add_special_tokens=False)
+    model = AutoModelForCausalLM.from_pretrained(MODEL_PATH, load_in_8bit=True)  # Load quantized model
     output_tokens_batch = model.generate(inputs['input_ids'], temperature=0.0, max_new_tokens=10)
     return tokenizer.batch_decode(output_tokens_batch, skip_special_tokens=True)
 
