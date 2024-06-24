@@ -24,17 +24,18 @@ curr_time = datetime.now()
 formatted_time = curr_time.strftime("%m-%d-%H-%M-%S")
 concatenated_filehandle = f"batch-{formatted_time}"
 
-concat_csvs("in_csvs/", files, concatenated_filehandle)
+concat_csvs(files, concatenated_filehandle)
 
 print(f'Generated {concatenated_filehandle}')
 
-complete_command = """
+complete_command = f"""
 import subprocess
 
-subprocess.run(["python3", "/content/understanding-forgetting/icl_vs_if/generate.py", "--model", "alpaca", "--batch", "batch"])
+subprocess.run(["python3", "/content/understanding-forgetting/icl_vs_if/generate.py", "--model", "alpaca", "--batch", "{concatenated_filehandle}"])
 """
 
 with open("/content/understanding-forgetting/batch_generate.py", "w") as f:
     f.write(complete_command)
 
 print("Generated batch_generate.py")
+
