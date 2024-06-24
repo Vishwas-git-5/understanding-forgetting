@@ -1,3 +1,4 @@
+import os
 from itertools import product
 import pandas as pd
 
@@ -19,19 +20,22 @@ files = []
 for (task, shot), lang, instr, prompt_template in product(task_list, lang_list, instr_list, prompt_template_list):
     files.append(f"{task}-{instr}-{prompt_template}-{lang}-{shot}shot.csv")
 
-concatenated_filehandle = "batch"
+# Check if files exist
+missing_files = [f for f in files if not os.path.isfile(f'/content/{f}')]
+if missing_files:
+    print(f"Error: The following files are missing in /content/: {', '} ".join(missing_files))
+else:
+    concatenated_filehandle = "batch"
+    concat_csvs(files, concatenated_filehandle)
+    print(f'Generated {concatenated_filehandle}.csv')
 
-concat_csvs(files, concatenated_filehandle)
-
-print(f'Generated {concatenated_filehandle}.csv')
-
-complete_command = """
+    complete_command = f"""
 import subprocess
 
-subprocess.run(["python3", "/content/understanding-forgetting/icl_vs_if/generate.py", "--model", "alpaca", "--batch", "batch"])
-"""
+subprocess.run(["python3", "/content/understanding-forgetting/icl_vs_if/generate.py", "--model", "alpaca", "--batch", "{concatenated_filehandle}"])
+    """
 
-with open("/content/understanding-forgetting/batch_generate.py", "w") as f:
-    f.write(complete_command)
+    with open("/content/understanding-forgetting/batch_generate.py", "w") as f:
+        f.write(complete_command)
 
-print("Generated batch_generate.py")
+    print("Generated batch_generate.py")
