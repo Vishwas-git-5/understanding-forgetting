@@ -30,10 +30,10 @@ print(f'Generated {concatenated_filehandle}')
 complete_command = """
 import subprocess
 
-subprocess.run(["python3", "/kaggle/working/understanding-forgetting/icl_vs_if/generate.py", "--model", "alpaca", "--batch", "batch"])
+subprocess.run(["python3", "/content/understanding-forgetting/icl_vs_if/generate.py", "--model", "alpaca", "--batch", "batch"])
 """
 
-with open("/kaggle/working/understanding-forgetting/batch_generate.py", "w") as f:
+with open("/content/understanding-forgetting/batch_generate.py", "w") as f:
     f.write(complete_command)
 
 print("Generated batch_generate.py")
