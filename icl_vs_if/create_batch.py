@@ -2,7 +2,8 @@ from itertools import product
 import pandas as pd
 from datetime import datetime
 
-def concat_csvs(location, filenames, resulting_filename):
+def concat_csvs(filenames, resulting_filename):
+    location = '/content/'
     combined_csv = pd.concat([pd.read_csv(location + f) for f in filenames], ignore_index=True)
     combined_csv.to_csv(location + resulting_filename + '.csv', index=False)
 
