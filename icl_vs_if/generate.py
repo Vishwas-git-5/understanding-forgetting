@@ -2,6 +2,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from tqdm import tqdm
 import argparse
 import pandas as pd
+import torch  # Import torch for GPU availability check
 
 # Update the MODEL_PATH to the new model identifier
 MODEL_PATH = "microsoft/Phi-3-mini-4k-instruct"
