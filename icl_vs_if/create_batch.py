@@ -3,7 +3,7 @@ from itertools import product
 import pandas as pd
 
 def concat_csvs(filenames, resulting_filename):
-    location = '/content/'
+    location = '/content/understanding-forgetting/icl_vs_if/in_csvs/'
     combined_csv = pd.concat([pd.read_csv(location + f) for f in filenames], ignore_index=True)
     combined_csv.to_csv(location + resulting_filename + '.csv', index=False)
 
@@ -21,9 +21,10 @@ for (task, shot), lang, instr, prompt_template in product(task_list, lang_list, 
     files.append(f"{task}-{instr}-{prompt_template}-{lang}-{shot}shot.csv")
 
 # Check if files exist
-missing_files = [f for f in files if not os.path.isfile(f'/content/{f}')]
+location = '/content/understanding-forgetting/icl_vs_if/in_csvs/'
+missing_files = [f for f in files if not os.path.isfile(location + f)]
 if missing_files:
-    print(f"Error: The following files are missing in /content/: {', '} ".join(missing_files))
+    print(f"Error: The following files are missing in {location}: {', '.join(missing_files)}")
 else:
     concatenated_filehandle = "batch"
     concat_csvs(files, concatenated_filehandle)
