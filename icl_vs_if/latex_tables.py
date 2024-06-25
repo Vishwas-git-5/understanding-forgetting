@@ -1,6 +1,7 @@
 import numpy as np
 from evaluate_accuracy import get_results_dict
 import sys
+import os
 
 sys.stdout = open('latex_tables.txt', 'w')
 
@@ -9,7 +10,15 @@ lang_codes_to_name = {
     'en': 'English',
 }
 
-files, results = get_results_dict('/content/understanding-forgetting/icl_vs_if/out_csvs/batch-alpaca.csv')
+# File path
+file_path = '/content/understanding-forgetting/icl_vs_if/out_csvs/batch-alpaca.csv'
+
+# Check if the file exists
+if not os.path.exists(file_path):
+    print(f"Error: The file '{file_path}' does not exist.")
+    sys.exit(1)
+
+files, results = get_results_dict(file_path)
 
 # Only the alpaca model
 MODELS = ['alpaca']
